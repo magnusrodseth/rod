@@ -1,6 +1,6 @@
 /// This is the language's abtract syntax tree (AST).
 /// In this language, everything is an expression. Each expression may itself contain sub-expressions.
-#[derive(Debug)]
+#[derive(Debug, PartialEq, Clone)]
 pub enum Expression {
     Number(f64),
     Variable(String),
@@ -23,4 +23,16 @@ pub enum Expression {
         body: Box<Expression>,
         then: Box<Expression>,
     },
+}
+
+pub fn eval(expr: &Expression) -> Result<f64, String> {
+    match expr {
+        Expression::Number(x) => Ok(*x),
+        Expression::Negation(a) => Ok(-eval(a)?),
+        Expression::Add(a, b) => Ok(eval(a)? + eval(b)?),
+        Expression::Subtract(a, b) => Ok(eval(a)? - eval(b)?),
+        Expression::Multiply(a, b) => Ok(eval(a)? * eval(b)?),
+        Expression::Divide(a, b) => Ok(eval(a)? / eval(b)?),
+        _ => todo!(), // We'll handle other cases later
+    }
 }
