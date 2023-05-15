@@ -131,4 +131,24 @@ mod tests {
         assert_eval!("4 + -2", 2.0);
         assert_eval!("-(4 + 2)", -6.0);
     }
+
+    #[test]
+    fn let_expression() {
+        assert_eval!("let five = 5; five * 3", 15.0);
+        assert_eval!("let five = 5; let three = 3; five * three", 15.0);
+        assert_eval!("let five = 5; let three = 3; five * three + 2", 17.0);
+    }
+
+    #[test]
+    fn functions() {
+        assert_eval!(
+            "
+            let five = 5;
+            let eight = 3 + five;
+            fn add x y = x + y;
+            add(five, eight)
+            ",
+            13.0
+        );
+    }
 }

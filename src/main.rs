@@ -6,6 +6,7 @@ use chumsky::Parser;
 fn main() {
     // TODO: Use Clap for command line arguments
     let src = std::fs::read_to_string(std::env::args().nth(1).unwrap()).unwrap();
+
     match parser::parser().parse(src) {
         Ok(node) => match eval(&node, &mut Vec::new(), &mut Vec::new()) {
             Ok(result) => println!("Result: {}", result),
