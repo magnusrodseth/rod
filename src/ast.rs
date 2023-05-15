@@ -36,3 +36,35 @@ pub fn eval(expr: &Expression) -> Result<f64, String> {
         _ => todo!(), // We'll handle other cases later
     }
 }
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+    use crate::parser;
+    use chumsky::Parser;
+
+    /// This is a macro that makes it easier to write tests.
+    /// It parses the source code, then evaluates the AST, then compares the result to the expected value.
+    macro_rules! assert_eval {
+        ($src:expr, $result:expr) => {
+            match parser::parser().parse($src) {
+                Ok(node) => match eval(&node) {
+                    Ok(result) => {
+                        assert_eq!(result, $result);
+                    }
+                    Err(err) => panic!("Eval error: {}", err),
+                },
+                Err(errors) => panic!("Parse error: {:?}", errors),
+            }
+        };
+    }
+
+    #[test]
+    fn arithmetic() {
+        assert_eval!("3 * 4 + 2", 14.0);
+        assert_eval!("3 * (4 + 2)", 18.0);
+        assert_eval!("-4 + 2", -2.0);
+        assert_eval!("4 + -2", 2.0);
+        assert_eval!("-(4 + 2)", -6.0);
+    }
+}
