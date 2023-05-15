@@ -12,6 +12,19 @@
   [this](https://www.rust-lang.org/tools/install) guide.
 * run `cargo install rod`
 
+## Running the compiler
+
+```sh
+# Navigate to the project directory
+cd rod
+
+# Run the `.rod` file through the interpreter
+cargo run -- examples/*.rod
+
+# Run all tests
+cargo test
+```
+
 ## License
 
 MIT license([LICENSE-MIT](LICENSE-MIT) or http://opensource.org/licenses/MIT)
